@@ -24,23 +24,6 @@ const UserSchema = new Schema({
         required: [true, 'Please provide a password'],
         minlength: 6,
     },
-    role: {
-        type: String,
-        enum: ['guardian', 'child'],
-        required: true,
-    },
-    age: {
-        type: Number,
-        required: function () {
-            return this.role === 'child';
-        },
-    },
-    phoneNumber: {
-        type: String,
-        required: function () {
-            return this.role === 'guardian';
-        },
-    },
     activitiesEnrolled: [
         {
             type: mongoose.Schema.Types.ObjectId,
