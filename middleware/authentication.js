@@ -11,7 +11,7 @@ const auth = async(req, res, next) => {
     const token = authHeader.split('Bearer ')[1];
     try{
         const payload = jwt.verify(token, process.env.JWT_SECRET);
-        //attach user to the job routes
+        //attach user to the activity routes
         /*const user = User.findOne(payload.id).select('-password');
         req.user = user;*/
         req.user = {userId: payload.userId, name: payload.name};
