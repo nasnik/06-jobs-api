@@ -18,6 +18,9 @@ const getActivity = async (req, res) => {
 };
 
 const createActivity = async (req, res) => {
+    if (!req.user || !req.user.userId) {
+        throw new BadRequestError('User authentication failed');
+    }
     req.body.createdBy = req.user.userId;
     const activity = await Activity.create(req.body);
     res.status(StatusCodes.CREATED).json({ activity });
