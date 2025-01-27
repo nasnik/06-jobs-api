@@ -1,0 +1,172 @@
+openapi: 3.0.0
+info:
+  title: Activities API
+  version: 1.0.0
+  description: API documentation for Activities API
+servers:
+  - url: https://activities-api-b21z.onrender.com/api/v1
+tags:
+  - name: Auth
+    description: Endpoints related to user authentication
+  - name: Activities
+    description: Endpoints related to activities
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              example:
+                name: dasia
+                email: dasia@gmail.com
+                password: secret
+      responses:
+        '201':
+          description: User registered successfully
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Log in a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              example:
+                email: dasia@gmail.com
+                password: secret
+      responses:
+        '200':
+          description: Login successful
+  /activities:
+    get:
+      tags:
+        - Activities
+      summary: Get all activities
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of activities
+    post:
+      tags:
+        - Activities
+      summary: Create a new activity
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                location:
+                  type: string
+                ageGroup:
+                  type: object
+                  properties:
+                    min:
+                      type: integer
+                    max:
+                      type: integer
+                price:
+                  type: number
+              example:
+                name: Playing
+                description: A fun camp for kids to learn playing skills.
+                location: Downtown Community Center
+                ageGroup:
+                  min: 10
+                  max: 13
+                price: 150
+      responses:
+        '201':
+          description: Activity created successfully
+  /activities/{id}:
+    get:
+      tags:
+        - Activities
+      summary: Get a single activity
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Details of the activity
+    patch:
+      tags:
+        - Activities
+      summary: Update an activity
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              example:
+                name: Dirkin
+      responses:
+        '200':
+          description: Activity updated successfully
+    delete:
+      tags:
+        - Activities
+      summary: Delete an activity
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Activity deleted successfully
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
